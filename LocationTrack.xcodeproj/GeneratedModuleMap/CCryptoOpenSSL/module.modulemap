@@ -1,0 +1,4 @@
+module CCryptoOpenSSL {
+    umbrella "/Users/mykhailobondarenko/Developer/LocationTrackServer/.build/checkouts/crypto/Sources/CCryptoOpenSSL/include"
+    export *
+}
