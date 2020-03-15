@@ -19,18 +19,19 @@ public func routes(_ router: Router) throws {
     router.get("word-test") { request in
         return wordKey(with: request)
     }
+    
     router.post("create", use: sessionManager.createTrackingSession)
     router.post("close", TrackingSession.parameter) { (req) -> HTTPStatus in
         let session = try req.parameters.next(TrackingSession.self)
         sessionManager.close(session)
         return .ok
     }
+    
     router.post("update", TrackingSession.parameter) { (req) -> Future<HTTPStatus> in
         let session = try req.parameters.next(TrackingSession.self)
         return try Location.decode(from: req).map(to: HTTPStatus.self) { location in
             sessionManager.update(location, for: session)
             return .ok
         }
-        
     }
 }
