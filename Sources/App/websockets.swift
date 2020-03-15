@@ -10,4 +10,12 @@ public func sockets(_ websockets: NIOWebSocketServer) {
             ws.send("echo - \(text)")
         }
     }
+    websockets.get("listen", TrackingSession.parameter) { ws, req in
+        let session = try req.parameters.next(TrackingSession.self)
+        guard sessionManager.sessions[session] != nil else {
+            ws.close()
+            return
+        }
+        sessionManager.add(listener: ws, to: session)
+    }
 }
